@@ -52,6 +52,17 @@ Base de datos en memoria inicializada automáticamente al arrancar mediante `sch
 
 Para reinicializar la base con datos de prueba basta con reiniciar la aplicación.
 
+### Capas JPA (entidades y repositorios)
+
+| Componente | Archivo | Descripción |
+|-----------|---------|-------------|
+| Entidad | `entity/OrdenTrabajo.java` | Mapea la tabla `OT` |
+| Entidad | `entity/OtItem.java` | Mapea la tabla `OT_ITEM` (subtotal calculado en solo-lectura) |
+| Repositorio | `repository/OrdenTrabajoRepository.java` | Acceso JPA a órdenes de trabajo (Spring Data JPA) |
+| Repositorio | `repository/OtItemRepository.java` | Acceso JPA a ítems con `findByOtId()` |
+
+El `PedidoController` consulta las órdenes desde el repositorio (`findAll()`), por lo que el endpoint devuelve datos reales de la base de datos H2.
+
 ### Configuración (`src/main/resources/application.yml`)
 
 ```yaml
@@ -83,7 +94,7 @@ spring:
 
 | Método | Ruta | Descripción | Acceso |
 |--------|------|-------------|--------|
-| `GET` | `/api/pedidos` | Lista de pedidos del usuario autenticado | Bearer JWT (autenticado) |
+| `GET` | `/api/pedidos` | Lista de pedidos del usuario autenticado, leídos desde el repositorio JPA | Bearer JWT (autenticado) |
 
 ## ▶️ Ejecución
 
